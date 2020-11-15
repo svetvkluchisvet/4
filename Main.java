@@ -6,33 +6,33 @@ import java.util.ArrayList;
 
 public class Main {
 
-    static class Employee {
+    static class Person {
         String id, salary, name, gender, birthday;
-        Subdivision subdivision;
+        Subunit subunit;
 
-        public Employee(String a, String b, String c, String d, String e, Subdivision f) {
+        public Person (String a, String b, String c, String d, String e, Subunit f) {
             id = a;
             name = b;
             birthday = d;
             gender = c;
             salary = e;
-            subdivision = f;
+            subunit = f;
         }
     }
 
-    static class Subdivision {
+    static class Subunit {
         String name;
         int id;
 
-        public Subdivision(String a, int b) {
+        public Subunit(String a, int b) {
             name = a;
             id = b;
         }
     }
     public static void main(String[] args) throws IOException {
-        String csvFilePath = "foreign_names.csv";
-       String separator = ";";
-        ArrayList<Employee> office = new ArrayList<>();
+        String csvFilePath = "D:\\Бурляева\\Универ\\3 курс 5 семестр\\Жаба\\(Л4) Считывание из файла в коллекцию\\foreign_names.csv";
+        String separator = ";";
+        ArrayList<Person> office = new ArrayList<>();
         try (InputStream in = Main.class.getClassLoader().getResourceAsStream(csvFilePath)) {
             CSVReaderBuilder builder = new CSVReaderBuilder(new FileReader(csvFilePath));
             CSVReader reader = builder.withSkipLines(1).build();
@@ -43,17 +43,19 @@ public class Main {
             while ((nextLine = reader.readNext()) != null) {
                 nextLine = nextLine[0].split(separator);
                 if (nextLine.length > 2) {
-                    Employee tmp = new Employee(nextLine[0], nextLine[1],
-                            nextLine[2], nextLine[3], nextLine[5], new Subdivision(nextLine[4], nextLine[4].charAt(0) - 'A'));
+                    Person tmp = new Person(nextLine[0], nextLine[1],
+                            nextLine[2], nextLine[3], nextLine[5], new Subunit(nextLine[4], nextLine[4].charAt(0) - 'A'));
                     office.add(tmp);
                 }
             }
-        } catch (FileNotFoundException e) {
+        }
+        catch (FileNotFoundException e) {
             e.printStackTrace();
+
         } finally {
-            for (Employee tmp: office) {
+            for (Person tmp: office) {
                 System.out.println(tmp.id + " " + tmp.name + " " + tmp.gender
-                        + " " + tmp.birthday + " " + tmp.subdivision.name + " "  +tmp.subdivision.id + " " + tmp.salary);
+                        + " " + tmp.birthday + " " + tmp.subunit.name + " "  +tmp.subunit.id + " " + tmp.salary);
             }
         }
     }
